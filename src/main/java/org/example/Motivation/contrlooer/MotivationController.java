@@ -1,4 +1,3 @@
-
 package org.example.motivation.controller;
 
 import org.example.motivation.entity.Motivation;
@@ -12,7 +11,6 @@ public class MotivationController {
     int lastId = 0; // 몇 번까지 썼더라?
     List<Motivation> motivations = new ArrayList<>(); // motivation 저장// 소
     Scanner sc;
-    private int i = lastId;
 
     public MotivationController(Scanner sc) {
         this.sc = sc;
@@ -33,14 +31,7 @@ public class MotivationController {
         System.out.printf("%d번 motivation이 등록됨\n", id);
         lastId++;
     }
-    public void del() {
-        this.i = lastId;
-        System.out.println("몇번을 지우시겠습니까?");
-        if(sc.nextLine().equals(lastId)) {
-            motivations.remove(lastId);
-        }
-        System.out.println("%d" + "번 삭제가 완료되었습니다." );
-    }
+
     public void list() {
         if (motivations.size() == 0) {
             System.out.println("등록된 moti 없어");
@@ -60,7 +51,30 @@ public class MotivationController {
             System.out.printf("   %d    /     %s        /      %s        \n", motivation.getId(), motivation.getSource(), motivation.getBody());
         }
 
-
         System.out.println("=".repeat(40));
+    }
+
+    public void delete(String cmd) {
+        int id = Integer.parseInt(cmd.split(" ")[1]);
+
+        Motivation foundMotivation = null;
+        int foundIndex = -1;
+
+        for (int i = 0; i < motivations.size(); i++) {
+            Motivation motivation = motivations.get(i);
+            if (motivation.getId() == id) {
+                foundMotivation = motivation;
+                foundIndex = i;
+                break;
+            }
+        }
+
+        if (foundMotivation == null) {
+            System.out.println("해당 moti는 없던데????");
+            return;
+        }
+
+        motivations.remove(foundIndex);
+        System.out.println(id + "번 moti 삭제됨");
     }
 }
